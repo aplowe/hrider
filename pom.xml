@@ -28,15 +28,14 @@
     </repositories>
 
     <properties>
-        <hadoop.version>2.2.0</hadoop.version>
-        <hbase.version>0.96.1-hadoop2</hbase.version>
+        <hbase.version>0.96.1.1-hadoop2</hbase.version>
     </properties>
 
     <profiles>
+        <!-- just in case it makes a difference! -->
         <profile>
             <id>cdh5-beta2</id>
             <properties>
-                <hadoop.version>2.2.0-cdh5.0.0-beta-2</hadoop.version>
                 <hbase.version>0.96.1.1-cdh5.0.0-beta-2</hbase.version>
             </properties>
         </profile>
@@ -44,23 +43,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.apache.hadoop</groupId>
-            <artifactId>hadoop-client</artifactId>
-            <version>${hadoop.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.hbase</groupId>
-            <artifactId>hbase-client</artifactId>
-            <version>${hbase.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.apache.hbase</groupId>
             <artifactId>hbase-server</artifactId>
-            <version>${hbase.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.hbase</groupId>
-            <artifactId>hbase-common</artifactId>
             <version>${hbase.version}</version>
         </dependency>
         <dependency>
@@ -79,12 +63,6 @@
             <groupId>com.intellij</groupId>
             <artifactId>forms_rt</artifactId>
             <version>7.0.3</version>
-        </dependency>
-        <dependency>
-            <groupId>com.sun</groupId>
-            <artifactId>tools</artifactId>
-            <scope>compile</scope>
-            <version>1.6</version>
         </dependency>
     </dependencies>
 
@@ -128,11 +106,26 @@
                 </configuration>
             </plugin>
             <plugin>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.2</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <shadedArtifactAttached>true</shadedArtifactAttached>
+                    <shadedClassifierName>run</shadedClassifierName>
+                </configuration>
+            </plugin>
+            <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.5.1</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
             <plugin>
