@@ -1,9 +1,15 @@
 package hrider.converters;
 
-import org.apache.hadoop.hbase.HRegionInfo;
-import org.apache.hadoop.hbase.util.Bytes;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutput;
+import java.io.DataOutputStream;
+import java.io.IOException;
 
-import java.io.*;
+import org.apache.hadoop.hbase.HRegionInfo;
+import org.apache.hadoop.hbase.TableName;
+import org.apache.hadoop.hbase.util.Bytes;
 
 /**
  * Copyright (C) 2012 NICE Systems ltd.
@@ -47,7 +53,7 @@ public class RegionInfoConverter extends JsonConverter {
 
         public HRegionInfo toHRegion() {
             HRegionInfo info = new HRegionInfo(
-                Bytes.toBytesBinary(tableName), Bytes.toBytesBinary(startKey), Bytes.toBytesBinary(endKey), split, regionID);
+		    TableName.valueOf(tableName), Bytes.toBytesBinary(startKey), Bytes.toBytesBinary(endKey), split, regionID);
 
             info.setOffline(offLine);
             return info;

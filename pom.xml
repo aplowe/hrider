@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>h-rider</groupId>
@@ -28,50 +28,39 @@
     </repositories>
 
     <properties>
-        <hbase.version>0.90.4</hbase.version>
+        <hadoop.version>2.2.0</hadoop.version>
+        <hbase.version>0.96.1-hadoop2</hbase.version>
     </properties>
 
     <profiles>
         <profile>
-            <id>cdh4</id>
+            <id>cdh5-beta2</id>
             <properties>
-                <hbase.version>0.92.1-cdh4.1.2</hbase.version>
-                <hadoop.version>2.0.0-cdh4.1.2</hadoop.version>
-            </properties>
-            <dependencies>
-                <dependency>
-                    <groupId>org.apache.hadoop</groupId>
-                    <artifactId>hadoop-client</artifactId>
-                    <version>${hadoop.version}</version>
-                </dependency>
-            </dependencies>
-        </profile>
-        <profile>
-            <id>0.94.1</id>
-            <properties>
-                <hbase.version>0.94.1</hbase.version>
-                <hadoop.version>1.0.3</hadoop.version>
-            </properties>
-            <dependencies>
-                <dependency>
-                    <groupId>org.apache.hadoop</groupId>
-                    <artifactId>hadoop-core</artifactId>
-                    <version>${hadoop.version}</version>
-                </dependency>
-            </dependencies>
-        </profile>
-        <profile>
-            <id>0.90.4</id>
-            <properties>
-                <hbase.version>0.90.4</hbase.version>
+                <hadoop.version>2.2.0-cdh5.0.0-beta-2</hadoop.version>
+                <hbase.version>0.96.1.1-cdh5.0.0-beta-2</hbase.version>
             </properties>
         </profile>
     </profiles>
 
     <dependencies>
         <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-client</artifactId>
+            <version>${hadoop.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.hbase</groupId>
-            <artifactId>hbase</artifactId>
+            <artifactId>hbase-client</artifactId>
+            <version>${hbase.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hbase</groupId>
+            <artifactId>hbase-server</artifactId>
+            <version>${hbase.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hbase</groupId>
+            <artifactId>hbase-common</artifactId>
             <version>${hbase.version}</version>
         </dependency>
         <dependency>
@@ -102,7 +91,6 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <version>2.5.1</version>
                 <executions>
@@ -122,7 +110,6 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.4</version>
                 <configuration>
@@ -146,6 +133,16 @@
                 <configuration>
                     <source>1.6</source>
                     <target>1.6</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <configuration>
+                    <mainClass>hrider.ui.forms.Window</mainClass>
+                    <workingDirectory>${project.build.directory}</workingDirectory>
+                    <executable>${project.build.finalName}.jar</executable>
                 </configuration>
             </plugin>
         </plugins>
